@@ -69,7 +69,7 @@
   .page.active{ opacity:1; transform:translateX(0) scale(1); pointer-events:auto; z-index:2; }
 
   .accent-wash{ position:absolute; inset:0; z-index:0; opacity:0.14; pointer-events:none; }
-  .page-content{ position:relative; z-index:2; display:flex; flex-direction:column; flex:1; min-height:0; }
+  .page-content{ position:relative; z-index:2; display:flex; flex-direction:column; flex:1; min-height:0; overflow-y:auto; }
 
   .folio{
     position:absolute; bottom:14px; right:20px;
@@ -213,8 +213,8 @@
         <img class="cf-5" src="quiet-observer.png" alt="">
       </div>
       <div class="cover-inner">
-        <div class="cover-title">A Self-Discovery Quiz<br>How Do You Experience the World?</div>
-        <div class="cover-sub">A short self-exploration experience<br>about how you notice, understand, and respond to the world<br>inspired by research on <strong>Sensory Processing Sensitivity (SPS)</strong></div>
+        <div class="cover-title">How Do You<br>Experience the World</div>
+        <div class="cover-sub">Inspired by research on <strong>Sensory Processing Sensitivity (SPS)</strong></div>
         <div class="cover-time">Takes about 5 to 7 minutes, no right or wrong answers</div>
         <button class="cover-btn" onclick="go(1)">Turn the page to begin</button>
       </div>
@@ -226,8 +226,8 @@
       <div class="corner-figure" style="width:130px; right:-14px; bottom:6px; opacity:0.92;"><img src="little-noticer.png" alt=""></div>
       <div class="page-content" style="justify-content:center;">
         <div class="p-title">Sensitivity isn't a switch.</div>
-        <div class="p-body">Everyone experiences the world differently.<br>Some things might catch your attention right away.<br>Others might barely register at all.</div>
-        <div class="p-body">This isn't a quiz that tells you who you are.<br>It's a small map.<br>One that helps you explore how you experience the world.</div>
+        <div class="p-body">Everyone experiences the world differently. Some things might catch your attention right away. Others might barely register at all.</div>
+        <div class="p-body">This isn't a quiz that tells you who you are. It's a small map. One that helps you explore how you experience the world.</div>
       </div>
       <div class="folio">2</div>
     </section>
@@ -275,7 +275,7 @@
     <!-- Gift/Care -->
     <section class="page" data-page="giftcare">
       <div class="accent-wash" style="background:var(--mauve);"></div>
-      <div class="page-content" id="giftCareCard" style="justify-content:center;"></div>
+      <div class="page-content" id="giftCareCard" style="justify-content:flex-start;"></div>
       <div class="folio">10</div>
     </section>
 
@@ -296,7 +296,7 @@
       <div class="reflect-shape" style="width:50px; height:50px; background:var(--coral); opacity:0.35; bottom:100px; left:10px;"></div>
       <div class="reflect-shape" style="width:34px; height:34px; background:var(--slate); opacity:0.4; top:60px; right:20px;"></div>
       <div class="page-content" style="align-items:center; justify-content:center; text-align:center;">
-        <div class="p-title serif" style="font-size:17px; line-height:1.75;">You don't need to feel everything intensely<br>to experience the world in your own way.</div>
+        <div class="p-title serif" style="font-size:13.5px; line-height:1.7; text-transform:uppercase; letter-spacing:0.04em;">You don't need to feel everything intensely to experience the world in your own way.</div>
       </div>
       <div class="folio">12</div>
     </section>
@@ -536,6 +536,7 @@ function getResultPresentation(){
     return {
       mode:'dual',
       title: `${p.en} & ${s.en}`,
+      titleHTML: `${p.en}<br>&<br>${s.en}`,
       leadHTML: `You might find yourself a little like both <strong>${p.en}</strong> and <strong>${s.en}</strong>.`,
       figureHTML: `
         <img src="${p.img}" style="width:170px; left:8%; top:0; transform:rotate(-6deg); z-index:2;">
@@ -584,14 +585,15 @@ function getResultPresentation(){
 function renderResult(){
   const pres = getResultPresentation();
   document.getElementById('resultFigureStage').innerHTML = pres.figureHTML;
-  document.getElementById('resultName').textContent = pres.title;
+  document.getElementById('resultName').innerHTML = pres.titleHTML || pres.title;
   document.getElementById('resultStory').textContent = pres.storyHTML;
   document.getElementById('resultLead').innerHTML = pres.leadHTML;
 }
 function renderGiftCare(){
   const pres = getResultPresentation();
+  const titleBlock = pres.mode === 'dual' ? '' : `<div class="p-title" style="font-size:16px; text-align:center;">${pres.title}</div>`;
   document.getElementById('giftCareCard').innerHTML = `
-    <div class="p-title" style="font-size:16px; text-align:center;">${pres.title}</div>
+    ${titleBlock}
     ${pres.giftCareHTML}`;
 }
 function renderMap(normDims){
